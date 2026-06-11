@@ -7,8 +7,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="FaturaScan">
-<title>FaturaScan</title>
+<meta name="apple-mobile-web-app-title" content="XLSTRUCT Faturas">
+<title>XLSTRUCT Faturas</title>
 <style>
   :root {
     --bg:#0f1219; --surface:#1a1f2e; --surface2:#222840;
@@ -278,15 +278,16 @@
 let S = {
   invoices: [],
   cats: [
-    {id:'alimentacao',name:'Alimentação',icon:'🛒'},
+    {id:'materiais',name:'Materiais',icon:'🧱'},
     {id:'combustivel',name:'Combustível',icon:'⛽'},
-    {id:'saude',name:'Saúde',icon:'🏥'},
-    {id:'restaurante',name:'Restaurante',icon:'🍽️'},
-    {id:'casa',name:'Casa',icon:'🏠'},
-    {id:'transporte',name:'Transporte',icon:'🚌'},
-    {id:'vestuario',name:'Vestuário',icon:'👕'},
-    {id:'lazer',name:'Lazer',icon:'🎭'},
-    {id:'outro',name:'Outro',icon:'📦'},
+    {id:'ferramentas',name:'Ferramentas',icon:'🔧'},
+    {id:'transporte',name:'Transporte',icon:'🚚'},
+    {id:'portagens',name:'Portagens',icon:'🛣️'},
+    {id:'refeicoes',name:'Refeições',icon:'🍽️'},
+    {id:'subempreiteiros',name:'Subempreiteiros',icon:'👷'},
+    {id:'equipamentos',name:'Equipamentos',icon:'🏗️'},
+    {id:'escritorio',name:'Escritório',icon:'📋'},
+    {id:'outros',name:'Outros',icon:'📦'},
   ]
 };
 let img = null, selCat = null, editId = null;
@@ -417,8 +418,23 @@ function saveInvoice(){
     S.invoices.unshift({id:Date.now().toString(),amount,desc,date:date||new Date().toISOString().slice(0,10),notes,category:selCat,categoryName:cat.name,categoryIcon:cat.icon,imageData:img,createdAt:new Date().toISOString()});
     toast('✅ Fatura guardada!','ok');
   }
-  persist(); closeModal('modal-inv');
-  img=null; editId=null;
+  persist();
+  closeModal('modal-inv');
+  img=null;
+  editId=null;
+
+  document.getElementById('f-amount').value='';
+  document.getElementById('f-desc').value='';
+  document.getElementById('f-notes').value='';
+  selCat=null;
+
+  toast('✅ Fatura guardada!','ok');
+
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab').classList.add('active');
+  document.getElementById('page-capture').classList.add('active');
+
   renderList();
 }
 
